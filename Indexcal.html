@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Glass Box Calculator</title>
+
+<style>
+*{
+    box-sizing:border-box;
+    font-family:Arial,sans-serif;
+}
+
+body{
+    margin:0;
+    padding:15px;
+    background:#f2f4f7;
+}
+
+.container{
+    max-width:520px;
+    margin:auto;
+}
+
+h1{
+    text-align:center;
+    margin-bottom:15px;
+}
+
+.card{
+    background:white;
+    padding:18px;
+    margin-bottom:15px;
+    border-radius:12px;
+    box-shadow:0 2px 8px rgba(0,0,0,.08);
+}
+
+h2{
+    margin-top:0;
+    font-size:20px;
+}
+
+label{
+    display:block;
+    font-weight:bold;
+    margin-top:10px;
+}
+
+input,select{
+    width:100%;
+    padding:12px;
+    margin-top:5px;
+    border:1px solid #ccc;
+    border-radius:7px;
+    font-size:16px;
+}
+
+.row{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:10px;
+}
+
+.result{
+    background:#f5f5f5;
+    padding:10px;
+    margin-top:10px;
+    border-radius:7px;
+}
+
+.price{
+    font-size:20px;
+    font-weight:bold;
+    margin-top:10px;
+}
+
+.total{
+    background:#111;
+    color:white;
+    padding:20px;
+    border-radius:12px;
+    text-align:center;
+    font-size:26px;
+    font-weight:bold;
+}
+
+button{
+    width:100%;
+    padding:14px;
+    margin-top:10px;
+    border:0;
+    border-radius:8px;
+    font-size:17px;
+}
+
+.reset{
+    background:#ddd;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>📐 Glass Box Calculator</h1>
+
+
+<!-- GLASS -->
+<div class="card">
+
+<h2>1️⃣ Glass Details</h2>
+
+<label>Glass Thickness</label>
+
+<select id="thickness" onchange="calculate()">
+    <option value="">Select Thickness</option>
+    <option value="5">5 MM</option>
+    <option value="6">6 MM</option>
+    <option value="8">8 MM</option>
+    <option value="10">10 MM</option>
+    <option value="12">12 MM</option>
+</select>
+
+
+<label>Glass Price / Sq.ft</label>
+
+<input
+    type="number"
+    id="glassRate"
+    placeholder="Enter your glass rate"
+    oninput="calculate()"
+>
+
+</div>
+
+
+<!-- MEASUREMENT -->
+<div class="card">
+
+<h2>2️⃣ Box Measurement</h2>
+
+<div class="row">
+
+<div>
+<label>Width</label>
+
+<input
+    type="number"
+    id="width"
+    placeholder="Width"
+    oninput="calculate()"
+>
+
+<select id="widthUnit" onchange="calculate()">
+    <option value="inch">Inch</option>
+    <option value="mm">MM</option>
+</select>
+</div>
+
+
+<div>
+<label>Height</label>
+
+<input
+    type="number"
+    id="height"
+    placeholder="Height"
+    oninput="calculate()"
+>
+
+<select id="heightUnit" onchange="calculate()">
+    <option value="inch">Inch</option>
+    <option value="mm">MM</option>
+</select>
+</div>
+
+</div>
+
+
+<div class="result">
+    Ceiling Width:
+    <b id="finalWidth">0</b> inch
+</div>
+
+<div class="result">
+    Ceiling Height:
+    <b id="finalHeight">0</b> inch
+</div>
+
+<div class="result">
+    Width Sq.ft:
+    <b id="widthSqft">0</b>
+</div>
+
+<div class="result">
+    Height Sq.ft:
+    <b id="heightSqft">0</b>
+</div>
+
+<div class="result">
+    <b>Total Glass Sq.ft:</b>
+    <b id="glassSqft">0</b>
+</div>
+
+</div>
+
+
+<!-- GLASS PRICE -->
+<div class="card">
+
+<h2>3️⃣ Glass Amount</h2>
+
+<div class="result">
+    Glass Thickness:
+    <b id="showThickness">-</b>
+</div>
+
+<div class="result">
+    Glass Rate:
+    ₹<b id="showGlassRate">0</b> / Sq.ft
+</div>
+
+<div class="price">
+    Glass Price:
+    ₹<span id="glassPrice">0</span>
+</div>
+
+</div>
+
+
+<!-- CRISTEL -->
+<div class="card">
+
+<h2>4️⃣ Cristel</h2>
+
+<div class="result">
+    Formula:
+    <br>
+    2 × (Width Sq.ft + Height Sq.ft)
+</div>
+
+<label>Cristel Rate / Unit</label>
+
+<input
+    type="number"
+    id="cristelRate"
+    value="10"
+    oninput="calculate()"
+>
+
+<div class="result">
+    Cristel Quantity:
+    <b id="cristelQty">0</b>
+</div>
+
+<div class="price">
+    Cristel Price:
+    ₹<span id="cristelPrice">0</span>
+</div>
+
+</div>
+
+
+<!-- HOLES -->
+<div class="card">
+
+<h2>5️⃣ Glass Hole</h2>
+
+<label>Number of Holes</label>
+
+<input
+    type="number"
+    id="holes"
+    min="0"
+    value="0"
+    oninput="calculate()"
+>
+
+<label>Hole Rate</label>
+
+<input
+    type="number"
+    id="holeRate"
+    value="50"
+    oninput="calculate()"
+>
+
+<div class="price">
+    Hole Price:
+    ₹<span id="holePrice">0</span>
+</div>
+
+</div>
+
+
+<!-- TOTAL -->
+<div class="total">
+
+GRAND TOTAL
+
+<br>
+
+₹<span id="grandTotal">0</span>
+
+</div>
+
+
+<button class="reset" onclick="resetCalculator()">
+🔄 Reset
+</button>
+
+</div>
+
+
+<script>
+
+
+/* =========================
+   CEILING MATHS
+========================= */
+
+function ceilingMaths(inch){
+
+    if(inch <= 0){
+        return 0;
+    }
+
+    /*
+       Exact 3 inch multiple:
+       unchanged
+
+       Otherwise:
+       next 3 inch multiple
+
+       20 → 21
+       23 → 24
+       24 → 24
+       25 → 27
+       27 → 27
+       28 → 30
+    */
+
+    return Math.ceil(inch / 3) * 3;
+}
+
+
+/* =========================
+   MM TO INCH
+========================= */
+
+function toInch(value,unit){
+
+    if(!value || value <= 0){
+        return 0;
+    }
+
+    if(unit === "mm"){
+        return value / 25.4;
+    }
+
+    return value;
+}
+
+
+/* =========================
+   MAIN CALCULATION
+========================= */
+
+function calculate(){
+
+    /* WIDTH */
+
+    let widthInput =
+        parseFloat(document.getElementById("width").value) || 0;
+
+    let widthUnit =
+        document.getElementById("widthUnit").value;
+
+    let widthInch =
+        toInch(widthInput,widthUnit);
+
+
+    /* HEIGHT */
+
+    let heightInput =
+        parseFloat(document.getElementById("height").value) || 0;
+
+    let heightUnit =
+        document.getElementById("heightUnit").value;
+
+    let heightInch =
+        toInch(heightInput,heightUnit);
+
+
+    /* CEILING MATHS */
+
+    let finalWidth =
+        ceilingMaths(widthInch);
+
+    let finalHeight =
+        ceilingMaths(heightInch);
+
+
+    /* SQ FT */
+
+    let widthSqft =
+        finalWidth / 12;
+
+    let heightSqft =
+        finalHeight / 12;
+
+
+    /*
+       IMPORTANT:
+
+       Width Sq.ft + Height Sq.ft
+       is used for Cristel.
+
+       Glass Sq.ft is the actual
+       rectangle area:
+       
+       Width × Height ÷ 144
+    */
+
+    let glassSqft =
+        (finalWidth * finalHeight) / 144;
+
+
+    /* GLASS */
+
+    let glassRate =
+        parseFloat(document.getElementById("glassRate").value) || 0;
+
+    let glassPrice =
+        glassSqft * glassRate;
+
+
+    /* CRISTEL */
+
+    let cristelRate =
+        parseFloat(document.getElementById("cristelRate").value) || 0;
+
+    let cristelQty =
+        2 * (widthSqft + heightSqft);
+
+    let cristelPrice =
+        cristelQty * cristelRate;
+
+
+    /* HOLES */
+
+    let holes =
+        parseFloat(document.getElementById("holes").value) || 0;
+
+    let holeRate =
+        parseFloat(document.getElementById("holeRate").value) || 0;
+
+    let holePrice =
+        holes * holeRate;
+
+
+    /* GRAND TOTAL */
+
+    let grandTotal =
+        glassPrice +
+        cristelPrice +
+        holePrice;
+
+
+    /* DISPLAY */
+
+    document.getElementById("finalWidth").innerText =
+        finalWidth.toFixed(2);
+
+    document.getElementById("finalHeight").innerText =
+        finalHeight.toFixed(2);
+
+    document.getElementById("widthSqft").innerText =
+        widthSqft.toFixed(2);
+
+    document.getElementById("heightSqft").innerText =
+        heightSqft.toFixed(2);
+
+    document.getElementById("glassSqft").innerText =
+        glassSqft.toFixed(2);
+
+
+    document.getElementById("showThickness").innerText =
+        document.getElementById("thickness").value
+        ? document.getElementById("thickness").value + " MM"
+        : "-";
+
+
+    document.getElementById("showGlassRate").innerText =
+        glassRate.toFixed(2);
+
+    document.getElementById("glassPrice").innerText =
+        glassPrice.toFixed(2);
+
+
+    document.getElementById("cristelQty").innerText =
+        cristelQty.toFixed(2);
+
+    document.getElementById("cristelPrice").innerText =
+        cristelPrice.toFixed(2);
+
+
+    document.getElementById("holePrice").innerText =
+        holePrice.toFixed(2);
+
+
+    document.getElementById("grandTotal").innerText =
+        grandTotal.toFixed(2);
+}
+
+
+/* =========================
+   RESET
+========================= */
+
+function resetCalculator(){
+
+    document.getElementById("thickness").value = "";
+
+    document.getElementById("glassRate").value = "";
+
+    document.getElementById("width").value = "";
+
+    document.getElementById("height").value = "";
+
+    document.getElementById("holes").value = 0;
+
+    document.getElementById("cristelRate").value = 10;
+
+    document.getElementById("holeRate").value = 50;
+
+    document.getElementById("widthUnit").value = "inch";
+
+    document.getElementById("heightUnit").value = "inch";
+
+    calculate();
+}
+
+
+calculate();
+
+</script>
+
+</body>
+</html>
